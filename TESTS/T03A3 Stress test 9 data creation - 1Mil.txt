@@ -1,0 +1,11 @@
+ insert into event_new (event_id , customer_id, customer_details, tariff, rate_offer, event_type, event_type_group, call_zone, call_direction, is_int, amount, duration, rounded_duration, volume, rounded_volume, units, unit_rate, charge )
+ select event_id + 1000000, customer_id, customer_details, tariff, rate_offer, event_type, event_type_group, call_zone, call_direction, is_int, amount, duration, rounded_duration, volume, rounded_volume, units, unit_rate, charge from event_new where cmp_results= 'Same';
+ 
+ insert into event_old (event_id , customer_id, customer_details, tariff, rate_offer, event_type, event_type_group, call_zone, call_direction, is_int, amount, duration, rounded_duration, volume, rounded_volume, units, unit_rate, charge )
+ select event_id + 1000000, customer_id, customer_details, tariff, rate_offer, event_type, event_type_group, call_zone, call_direction, is_int, amount, duration, rounded_duration, volume, rounded_volume, units, unit_rate, charge from event_new where cmp_results= 'Same';
+ 
+
+select count (*) from event_new;
+--977462
+
+commit;
