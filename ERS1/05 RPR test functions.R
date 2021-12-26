@@ -93,14 +93,15 @@ doImportAndPrepareData <- function(){
 
    #Step 3 : NN - train
     print (paste ("# phase 2b1 # NN (model prepare G1) started at: ", time3  ))
-    nn.g1<-neuralnet(UNIT_RATE ~ .  ,
-                  data=EDR.g1.mm.df.same.flt, hidden = g1_hidden ) # alternatives: c(10,5,3) ) , threshold=0.01),  stepmax = 1e+03 ...
+    nn.g1<<-neuralnet(UNIT_RATE ~ .  ,
+                  data=EDR.g1.mm.df.same.flt, hidden = g1_hidden, algorithm='rprop+') # , learningrate=0.00001) # , stepmax=1e5 ) # alternatives: c(10,5,3) ) , threshold=0.01),  stepmax = 1e+03 ...
     time4<-Sys.time();  phase2b1.dur<-time4-time3
     print (paste0 ("# phase 2b1 # ended after: ", phase2b1.dur ))
-    
+
     print (paste ("# phase 2b2 # NN (model prepare G2) started at: ", time4  ))
-    nn.g2<-neuralnet(UNIT_RATE ~ .  ,
-               data=EDR.g2.mm.df.same.flt, hidden = g2_hidden ) # alternatives: c(10,5,3) ) , threshold=0.01),  stepmax = 1e+03 ...
+    nn.g2<<-neuralnet(UNIT_RATE ~ .  ,
+               data=EDR.g2.mm.df.same.flt, hidden = g2_hidden, algorithm='rprop+') # , learningrate=0.00001) # ,stepmax=1e5 )
+  # alternatives: c(10,5,3) ) , threshold=0.01),  stepmax = 1e+03 ...
     time5<-Sys.time();  phase2b2.dur<-time5-time4
     print (paste0 ("# phase 2b2 # ended after: ", phase2b2.dur ))
 
@@ -166,13 +167,30 @@ doImportAndPrepareData <- function(){
          ( SELECT MAX(event_id)  KEEP (DENSE_RANK LAST ORDER BY clust, clust_dist)
            FROM EVENT_NEW_CLUST WHERE  cmp_results='Diff'   GROUP BY clust,cmp_diff) )  ) ) and event_id in (2,3,4,5,6,7,10,11,12)" ) )
 
+   candidates<-(dbGetQuery(jdbcConnection, "  select count (*) from EVENT_NEW_CLUST where event_id in  (select event_id from  (
+     SELECT event_id, cmp_results, cmp_diff, cmp_details, clust, round (clust_dist,2)
+     FROM EVENT_NEW_CLUST WHERE event_id IN
+     ( ( SELECT MIN(event_id)  KEEP (DENSE_RANK FIRST ORDER BY clust, clust_dist)
+         FROM EVENT_NEW_CLUST WHERE  cmp_results='Diff'   GROUP BY clust,cmp_diff)
+         UNION
+         ( SELECT MAX(event_id)  KEEP (DENSE_RANK LAST ORDER BY clust, clust_dist)
+           FROM EVENT_NEW_CLUST WHERE  cmp_results='Diff'   GROUP BY clust,cmp_diff) )  ) ) " ) )
+
+    #serialize lists for print
+    g1_lp<-paste0(g1_l, collapse="," )
+    g2_lp<-paste0(g2_l, collapse="," )
+    g1_cols_p<-paste0(g1_cols, collapse="," )
+    g2_cols_p<-paste0(g2_cols, collapse="," )
+
+    #print results
     print ("==========================================================================" )
-    print ( paste ("params: g1_k:" , g1_k, " g2_k: ", g2_k ,"g1_l: ", g1_l, " g2_l: " , g2_l) )
-    print ( "g1_cols: " )
-    print ( g1_cols ) 
-    print ( "g2_cols: " )
-    print ( g2_cols ) 
-    print ( "Which artificial errors got to selection?: " )
+    print ( paste ("params: g1_k:" , g1_k, " g2_k: ", g2_k ,"g1_l: ", g1_lp, " g2_l: " , g2_lp) )
+    print ( paste0 ( "g1_cols: ", g1_cols_p ))
+    print ( paste0 ( "g2_cols: ", g2_cols_p ))
+    print ("==========================================================================" )
+    print ( paste0 ("Artificial error detection analysis. for K(1):", g1_k," K(2):", g2_k, " lambda(1):",  g1_lp,  " lambda(2):", g2_lp ))
+    print ( paste0 ("Suggested candidates for manual validation: ", candidates ))
+    print ( paste0 ("Which artificial errors got to selection out of 9 (event_ids: 2,3,4,5,6,7,10,11,12)?: " ))
     print ( res ) 
 
     print (paste0 ("cols in G1 matrix: ", ncol(EDR.g1.mm.df.same.flt), "cols in G2 matrix: ", ncol(EDR.g2.mm.df.same.flt) ))

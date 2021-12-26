@@ -40,3 +40,4 @@ BEGIN
   SELECT COUNT (*) INTO cnumber FROM CUST;
   RETURN cnumber;
 END;
+/

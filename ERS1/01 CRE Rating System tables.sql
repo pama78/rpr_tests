@@ -74,6 +74,7 @@ CREATE TABLE EVENT
 -----------------------------------
 CREATE TABLE EVENT_NEW as select * from EVENT;
 CREATE TABLE EVENT_OLD as select * from EVENT;
+CREATE TABLE EVENT_NEW_CLUST as select * from EVENT; 
 ALTER TABLE EVENT_NEW ADD ( cmp_results varchar2(40), cmp_diff varchar2(400), cmp_details varchar2(4000) );
 ALTER TABLE EVENT_OLD ADD ( cmp_results varchar2(40), cmp_diff varchar2(400), cmp_details varchar2(4000) );
 

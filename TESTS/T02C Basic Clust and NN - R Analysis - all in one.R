@@ -1,5 +1,5 @@
 ############################################
-# Script : Test3 R Analysis
+# Script : T02C Basic Clust and NN - R Analysis - all in one
 # Purpose: Run the flow of k-Proto and NN on bigger samples of data
 # Flow   :
 #         1) import data from DB (maninuplate, split, format to factors)

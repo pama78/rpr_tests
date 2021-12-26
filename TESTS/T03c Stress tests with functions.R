@@ -43,7 +43,8 @@ library(RJDBC)
 #execute NN and kproto and store results to DB 
  kproto_NN_execute(kg1,kg2, lg1_est, lg2_est,  EDR.g1.cols, EDR.g2.cols, 80, 80  )
 
- #filter(EDR_CLUST_NN, CMP_RESULTS == "New") [,c("RATE_OFFER","EVENT_TYPE", "UNIT_RATE", "UNIT_RATE_NN","UNIT_RATE_NN_DIFF")]
+#show results 
+ filter(EDR_CLUST_NN, CMP_RESULTS == "New") [,c("RATE_OFFER","EVENT_TYPE", "UNIT_RATE", "UNIT_RATE_NN","UNIT_RATE_NN_DIFF")]
   
  
  

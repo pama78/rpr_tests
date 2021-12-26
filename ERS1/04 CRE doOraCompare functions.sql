@@ -75,6 +75,7 @@ BEGIN
    FROM (SELECT cmp_results||'='|| COUNT (*) cnt FROM event_new  GROUP BY cmp_results) ;
    RETURN retVal;
 END;
+/
 
 CREATE OR REPLACE Function doOraCompareDetails
 RETURN varchar2
@@ -118,4 +119,4 @@ BEGIN
      )  ' INTO retVal ;
    RETURN retVal;   
 END;
-
+/

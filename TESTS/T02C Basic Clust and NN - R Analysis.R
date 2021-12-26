@@ -17,10 +17,7 @@
  DB_PASS= "{DB_PASSWORD}"
 
 #first use - install packages
- install.packages('RJDBC')
- install.packages('rJava')
- install.packages("dplyr")
- install.packages('clustMixType')
+ #install.packages(c ('RJDBC', 'rJava', 'dplyr', 'clustMixType'))
  
 # 1) IMPORT DATA FROM DB ###########################################################################################
  #DB Connection + connectivity test
