@@ -25,7 +25,7 @@ library(RJDBC)
 
 #prepare environment 
  options(java.parameters = "-Xmx8048m")  #avoid java out of memory
- source("C:/!UCL/Alfa/ERS1/05 RPR test functions.R")
+ source("C:/!UCL/GIT2/rpr_tests/ERS1/05 RPR test functions.R")
  jdbcDriver =JDBC("oracle.jdbc.OracleDriver",classPath= DB_JDBC)
  jdbcConnection =dbConnect(jdbcDriver, paste0("jdbc:oracle:thin:@//",DB_INST), DB_USER , DB_PASS)
 

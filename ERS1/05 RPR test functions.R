@@ -92,16 +92,16 @@ doImportAndPrepareData <- function(){
     print (paste0 ("# phase 2a2 # ended after: ", phase2a2.dur ))
 
    #Step 3 : NN - train
+   #alternatives: learningrate=0.00001)  , stepmax=1e5, hidden= c(10,5,3) ) , threshold=0.01,  stepmax = 1e+03 ...
     print (paste ("# phase 2b1 # NN (model prepare G1) started at: ", time3  ))
     nn.g1<<-neuralnet(UNIT_RATE ~ .  ,
-                  data=EDR.g1.mm.df.same.flt, hidden = g1_hidden, algorithm='rprop+') # , learningrate=0.00001) # , stepmax=1e5 ) # alternatives: c(10,5,3) ) , threshold=0.01),  stepmax = 1e+03 ...
+                  data=EDR.g1.mm.df.same.flt, hidden = g1_hidden, algorithm='rprop+') 
     time4<-Sys.time();  phase2b1.dur<-time4-time3
     print (paste0 ("# phase 2b1 # ended after: ", phase2b1.dur ))
 
     print (paste ("# phase 2b2 # NN (model prepare G2) started at: ", time4  ))
     nn.g2<<-neuralnet(UNIT_RATE ~ .  ,
                data=EDR.g2.mm.df.same.flt, hidden = g2_hidden, algorithm='rprop+') # , learningrate=0.00001) # ,stepmax=1e5 )
-  # alternatives: c(10,5,3) ) , threshold=0.01),  stepmax = 1e+03 ...
     time5<-Sys.time();  phase2b2.dur<-time5-time4
     print (paste0 ("# phase 2b2 # ended after: ", phase2b2.dur ))
 
